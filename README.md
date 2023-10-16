@@ -8,3 +8,5 @@ After selecting one answer you can not change the answer, you can only go for ne
 
 # Display quiz score or result: 
 When user will submit the answer of last question and click on the next button. Then it will display the score.
+
+https://mrinalgupta7890.github.io/Quiz-App/
