@@ -2,100 +2,100 @@ const questions = [
     {
         question: "Which is the largest animal in the world?",
         answers:[
-            {text:"Elephant", correctAnswer : false},
-            {text:"Shark", correctAnswer : false},
-            {text:"Blue Whale", correctAnswer : true},
-            {text:"Giraffe", correctAnswer : false},
+            {text:"Elephant", correct : false},
+            {text:"Shark", correct : false},
+            {text:"Blue Whale", correct : true},
+            {text:"Giraffe", correct : false},
         ]
     },
 
     {
         question: "Which is the smallest country in the world?",
         answers:[
-            {text:"Vatican city", correctAnswer : true},
-            {text:"Bhutan", correctAnswer : false},
-            {text:"Nepal", correctAnswer : false},
-            {text:"SriLanka", correctAnswer : false},
+            {text:"Vatican city", correct : true},
+            {text:"Bhutan", correct : false},
+            {text:"Nepal", correct : false},
+            {text:"SriLanka", correct : false},
         ]
     },
 
     {
         question: "Which is the largest desert in the world?",
         answers:[
-            {text:"Kalahari", correctAnswer : false},
-            {text:"Gobi", correctAnswer : false},
-            {text:"Sahara", correctAnswer : false},
-            {text:"Antarctica", correctAnswer : true},
+            {text:"Kalahari", correct : false},
+            {text:"Gobi", correct : false},
+            {text:"Sahara", correct : false},
+            {text:"Antarctica", correct : true},
         ]
     },
 
     {
         question: "Which is the smallest continent in the world?",
         answers:[
-            {text:"Asia", correctAnswer : false},
-            {text:"Australia", correctAnswer : true},
-            {text:"Africa", correctAnswer : false},
-            {text:"Arctic", correctAnswer : false},
+            {text:"Asia", correct : false},
+            {text:"Australia", correct : true},
+            {text:"Africa", correct : false},
+            {text:"Arctic", correct : false},
         ]
     },
 
     {
         question: "What is the largest animal on the world?",
         answers:[
-            {text:"Elephant", correctAnswer : false},
-            {text:"Shark", correctAnswer : false},
-            {text:"Blue Whale", correctAnswer : true},
-            {text:"Giraffe", correctAnswer : false},
+            {text:"Elephant", correct : false},
+            {text:"Shark", correct : false},
+            {text:"Blue Whale", correct : true},
+            {text:"Giraffe", correct : false},
         ]
     },
 
     {
         question: "Which is the most sensitive organ in our body?",
         answers:[
-            {text:"Liver", correctAnswer : false},
-            {text:"Heart", correctAnswer : false},
-            {text:"Eye", correctAnswer : false},
-            {text:"Skin", correctAnswer : true},
+            {text:"Liver", correct : false},
+            {text:"Heart", correct : false},
+            {text:"Eye", correct : false},
+            {text:"Skin", correct : true},
         ]
     },
 
     {
         question: "Who invented Computer?",
         answers:[
-            {text:"Charles Babbage", correctAnswer : true},
-            {text:"Mahatma Gandhi", correctAnswer : false},
-            {text:"Mahendra Baghaut", correctAnswer : false},
-            {text:"Alexander Graham Bell", correctAnswer : false},
+            {text:"Charles Babbage", correct : true},
+            {text:"Mahatma Gandhi", correct : false},
+            {text:"Mahendra Baghaut", correct : false},
+            {text:"Alexander Graham Bell", correct : false},
         ]
     },
 
     {
         question: "Which country are the Giza Pyramids in?",
         answers:[
-            {text:"Italy", correctAnswer : false},
-            {text:"Sudan", correctAnswer : false},
-            {text:"Peru", correctAnswer : false},
-            {text:"Egypt", correctAnswer : true},
+            {text:"Italy", correct : false},
+            {text:"Sudan", correct : false},
+            {text:"Peru", correct : false},
+            {text:"Egypt", correct : true},
         ]
     },
 
     {
         question: "Gie National Park in Gujarat is famous for?",
         answers:[
-            {text:"Tiger", correctAnswer : false},
-            {text:"Lion", correctAnswer : true},
-            {text:"Leopard", correctAnswer : false},
-            {text:"Giraffe", correctAnswer : false},
+            {text:"Tiger", correct : false},
+            {text:"Lion", correct : true},
+            {text:"Leopard", correct : false},
+            {text:"Giraffe", correct : false},
         ]
     },
 
     {
         question: "The total distance around a figure is called its?",
         answers:[
-            {text:"Diameter", correctAnswer : false},
-            {text:"Circumference", correctAnswer : false},
-            {text:"Perimeter", correctAnswer : true},
-            {text:"Area", correctAnswer : false},
+            {text:"Diameter", correct : false},
+            {text:"Circumference", correct : false},
+            {text:"Perimeter", correct : true},
+            {text:"Area", correct : false},
         ]
     },
 ];
@@ -126,6 +126,10 @@ function showQuestion(){
         //        console.log('button', button);
         button.classList.add("btn");
         answerButtons.appendChild(button);
+        if(answer.correct){
+            button.dataset.correct = answer.correct;
+        }
+        button.addEventListener("click", selectAnswer);
     });
 }
 
@@ -135,5 +139,48 @@ function resetState(){
         answerButtons.removeChild(answerButtons.firstChild);
     }
 }
+
+function selectAnswer(e){
+    const selectedBtn = e.target;
+    const isCorrect = selectedBtn.dataset.correct === "true";
+    if(isCorrect){
+        selectedBtn.classList.add("correct");
+        score++;
+    }else{
+        selectedBtn.classList.add("incorrect");
+    }
+    Array.from(answerButtons.children).forEach(button => {
+        if(button.dataset.correct === "true"){
+            button.classList.add("correct");
+        }
+        button.disabled = true;
+    });
+    nextButton.style.display = "block";
+}
+
+function showScore(){
+    resetState();
+    questionElement.innerHTML = `You Scored ${score} out of ${questions.length}!`;
+    nextButton.innerHTML = "Play Again";
+    nextButton.style.display = "block";
+}
+
+function handleNextButton(){
+    currentQuestionIndex++ ;
+    if(currentQuestionIndex < questions.length){
+        showQuestion();
+    }else{
+        showScore();
+    }
+}
+
+nextButton.addEventListener("click", ()=> {
+    if(currentQuestionIndex < questions.length){
+        handleNextButton();
+    }else{
+        startQuiz();
+    }
+});
+
 
 startQuiz();
